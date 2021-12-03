@@ -56,12 +56,12 @@ class TodoWidget extends StatelessWidget {
   final String ?text;
   final bool isDone;
 
-  TodoWidget({this.text, required this.isDone});
+  const TodoWidget({this.text, required this.isDone});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 24.0,
         vertical: 8.0,
       ),
@@ -70,14 +70,14 @@ class TodoWidget extends StatelessWidget {
           Container(
             width: 20.0,
             height: 20.0,
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               right: 16.0,
             ),
             decoration: BoxDecoration(
-              color: isDone ? Color(0xFF211551) : Colors.transparent,
+              color: isDone ? const Color(0xFF211551) : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0),
               border: isDone ? null : Border.all(
-                color: Color(0xFF211551),
+                color: const Color(0xFF211551),
                 width: 1.5
               )
             ),
@@ -88,7 +88,7 @@ class TodoWidget extends StatelessWidget {
           Text(
             text ?? "Pas de titre",
             style: TextStyle(
-              color: isDone ? Color(0xFF211551) : Color(0xFF86829D),
+              color: isDone ? const Color(0xFF211551) : const Color(0xFF86829D),
               fontSize: 16.0,
               decoration: isDone ? TextDecoration.lineThrough : TextDecoration.none,
               decorationThickness: 3.0,
