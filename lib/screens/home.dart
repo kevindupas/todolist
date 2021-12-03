@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/screens/task.dart';
 import 'package:todolist/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -58,17 +59,26 @@ class _HomeState extends State<Home> {
                 Positioned(
                   bottom: 24.0,
                   right: 0.0,
-                  child: Container(
-                    width: 60.0,
-                    height: 60.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: Color(0xFF211551)
-                    ),
-                    child: Image.asset(
-                      'assets/images/add_icon.png',
-                      width: 70,
-                      height: 70,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => Task()
+                          ),
+                      );
+                    },
+                    child: Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Color(0xFF211551)
+                      ),
+                      child: Image.asset(
+                        'assets/images/add_icon.png',
+                        width: 70,
+                        height: 70,
+                      ),
                     ),
                   ),
                 )
