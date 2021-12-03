@@ -4,17 +4,17 @@ import 'package:todolist/models/task.dart';
 import 'package:todolist/models/todo.dart';
 import 'package:todolist/widgets.dart';
 
-class Taskpage extends StatefulWidget {
-  final Task task;
+class TaskPage extends StatefulWidget {
+  final Task ?task;
 
-  Taskpage({required this.task});
+  const TaskPage({Key? key, this.task}) : super(key: key);
 
   @override
-  _TaskpageState createState() => _TaskpageState();
+  _TaskPageState createState() => _TaskPageState();
 }
 
-class _TaskpageState extends State<Taskpage> {
-  DatabaseHelper _dbHelper = DatabaseHelper();
+class _TaskPageState extends State<TaskPage> {
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   int _taskId = 0;
   String _taskTitle = "";
@@ -32,9 +32,9 @@ class _TaskpageState extends State<Taskpage> {
       // Set visibility to true
       _contentVisile = true;
 
-      _taskTitle = widget.task.title!;
-      _taskDescription = widget.task.description!;
-      _taskId = widget.task.id!;
+      _taskTitle = widget.task!.title!;
+      _taskDescription = widget.task!.description!;
+      _taskId = widget.task!.id!;
     }
 
     _titleFocus = FocusNode();
@@ -57,151 +57,151 @@ class _TaskpageState extends State<Taskpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 24.0,
-                      bottom: 6.0,
-                    ),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Image(
-                              image: AssetImage(
-                                  'assets/images/back_arrow_icon.png'),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: TextField(
-                            focusNode: _titleFocus,
-                            onSubmitted: (value) async {
-                              // Check if the field is not empty
-                              if (value != "") {
-                                // Check if the task is null
-                                if (widget.task == null) {
-                                  Task _newTask = Task(title: value);
-                                  _taskId = await _dbHelper.insertTask(_newTask);
-                                  setState(() {
-                                    _contentVisile = true;
-                                    _taskTitle = value;
-                                  });
-                                } else {
-                                  await _dbHelper.updateTaskTitle(_taskId, value);
-                                  print("Tâche mis a jour");
-                                }
-                                _descriptionFocus.requestFocus();
-                              }
-                            },
-                            controller: TextEditingController()
-                              ..text = _taskTitle,
-                            decoration: InputDecoration(
-                              hintText: "Saisir un titre..",
-                              border: InputBorder.none,
-                            ),
-                            style: TextStyle(
-                              fontSize: 26.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF211551),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 24.0,
+                    bottom: 6.0,
                   ),
-                  Visibility(
-                    visible: _contentVisile,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 12.0,
-                      ),
-                      child: TextField(
-                        focusNode: _descriptionFocus,
-                        onSubmitted: (value) async {
-                          if(value != ""){
-                            if(_taskId != 0){
-                              await _dbHelper.updateTaskDescription(_taskId, value);
-                              _taskDescription = value;
-                            }
-                          }
-                          _todoFocus.requestFocus();
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
                         },
-                        controller: TextEditingController()..text = _taskDescription,
-                        decoration: InputDecoration(
-                          hintText: "Saisir une description...",
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 24.0,
+                        child: const Padding(
+                          padding: EdgeInsets.all(24.0),
+                          child: Image(
+                            image: AssetImage(
+                                'assets/images/back_arrow_icon.png'),
                           ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          focusNode: _titleFocus,
+                          onSubmitted: (value) async {
+                            // Check if the field is not empty
+                            if (value != "") {
+                              // Check if the task is null
+                              if (widget.task == null) {
+                                Task _newTask = Task(title: value);
+                                _taskId = await _dbHelper.insertTask(_newTask);
+                                setState(() {
+                                  _contentVisile = true;
+                                  _taskTitle = value;
+                                });
+                              } else {
+                                await _dbHelper.updateTaskTitle(_taskId, value);
+                              }
+                              _descriptionFocus.requestFocus();
+                            }
+                          },
+                          controller: TextEditingController()
+                            ..text = _taskTitle,
+                          decoration: const InputDecoration(
+                            hintText: "Saisir un titre..",
+                            border: InputBorder.none,
+                          ),
+                          style: const TextStyle(
+                            fontSize: 26.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF211551),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: _contentVisile,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 12.0,
+                    ),
+                    child: TextField(
+                      focusNode: _descriptionFocus,
+                      onSubmitted: (value) async {
+                        if(value != ""){
+                          if(_taskId != 0){
+                            await _dbHelper.updateTaskDescription(_taskId, value);
+                            _taskDescription = value;
+                          }
+                        }
+                        _todoFocus.requestFocus();
+                      },
+                      controller: TextEditingController()..text = _taskDescription,
+                      decoration: const InputDecoration(
+                        hintText: "Saisir une description..",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 24.0,
                         ),
                       ),
                     ),
                   ),
-                  Visibility(
-                    visible: _contentVisile,
-                    child: FutureBuilder(
-                      initialData: [],
-                      future: _dbHelper.getTodo(_taskId),
-                      builder: (context, snapshot) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () async {
-                                  if(snapshot.data[index].isDone == 0){
-                                    await _dbHelper.updateTodoDone(snapshot.data[index].id, 1);
-                                  } else {
-                                    await _dbHelper.updateTodoDone(snapshot.data[index].id, 0);
-                                  }
-                                  setState(() {});
-                                },
-                                child: TodoWidget(
-                                  text: snapshot.data[index].title,
-                                  isDone: snapshot.data[index].isDone == 0
-                                      ? false
-                                      : true,
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                ),
+                Visibility(
+                  visible: _contentVisile,
+                  child: FutureBuilder(
+                    initialData: const [],
+                    future: _dbHelper.getTodo(_taskId),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () async {
+                                if(snapshot.data[index].isDone == 0){
+                                  await _dbHelper.updateTodoDone(snapshot.data[index].id, 1);
+                                } else {
+                                  await _dbHelper.updateTodoDone(snapshot.data[index].id, 0);
+                                }
+                                setState(() {});
+                              },
+                              child: TodoWidget(
+                                text: snapshot.data[index].title,
+                                isDone: snapshot.data[index].isDone == 0
+                                    ? false
+                                    : true,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
-                  Visibility(
-                    visible: _contentVisile,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 24.0,
+                ),
+                Visibility(
+                  visible: _contentVisile,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                        bottom: 12.0,
                       ),
                       child: Row(
                         children: [
                           Container(
                             width: 20.0,
                             height: 20.0,
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                               right: 12.0,
                             ),
                             decoration: BoxDecoration(
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(6.0),
                                 border: Border.all(
-                                    color: Color(0xFF86829D), width: 1.5)),
-                            child: Image.asset(
-                              'assets/images/check_icon.png',
-                              width: 40,
-                              height: 40,
+                                    color: const Color(0xFF86829D), width: 1.5)),
+                            child: const Image(
+                              image: AssetImage('assets/images/check_icon.png'),
                             ),
                           ),
                           Expanded(
@@ -222,11 +222,10 @@ class _TaskpageState extends State<Taskpage> {
                                     setState(() {});
                                     _todoFocus.requestFocus();
                                   } else {
-                                    print("Task doesn't exist");
                                   }
                                 }
                               },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: "Saisir une tâche..",
                                 border: InputBorder.none,
                               ),
@@ -235,39 +234,42 @@ class _TaskpageState extends State<Taskpage> {
                         ],
                       ),
                     ),
-                  )
-                ],
-              ),
-              Visibility(
-                visible: _contentVisile,
-                child: Positioned(
-                  bottom: 24.0,
-                  right: 24.0,
-                  child: GestureDetector(
-                    onTap: () async {
-                      if(_taskId != 0) {
-                        await _dbHelper.deleteTask(_taskId);
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Container(
-                      width: 60.0,
-                      height: 60.0,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFE3577),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Image(
-                        image: AssetImage(
-                          "assets/images/delete_icon.png",
-                        ),
+                  ),
+                )
+              ],
+            ),
+            Visibility(
+              visible: _contentVisile,
+              child: Positioned(
+                bottom: 24.0,
+                right: 24.0,
+                child: GestureDetector(
+                  onTap: () async {
+                    if(_taskId != 0) {
+                      await _dbHelper.deleteTask(_taskId);
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Container(
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFFEC4848), Color(0xFFD93333)],
+                          begin: Alignment(0.0, -1.0),
+                          end: Alignment(0.0, 1.0)),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Image(
+                      image: AssetImage(
+                        "assets/images/delete_icon.png",
                       ),
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

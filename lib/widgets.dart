@@ -90,7 +90,9 @@ class TodoWidget extends StatelessWidget {
             style: TextStyle(
               color: isDone ? Color(0xFF211551) : Color(0xFF86829D),
               fontSize: 16.0,
-              fontWeight: isDone ? FontWeight.bold : FontWeight.w500,
+              decoration: isDone ? TextDecoration.lineThrough : TextDecoration.none,
+              decorationThickness: 3.0,
+              fontWeight: isDone ? FontWeight.w600 : FontWeight.w500,
             ),
           ),
         ],
