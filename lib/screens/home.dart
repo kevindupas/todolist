@@ -32,26 +32,29 @@ class _HomeState extends State<Home> {
                       ),
                       child: Image.asset(
                         'assets/images/logo.png',
-                        width: 70,
-                        height: 70,
+                        width: 40,
+                        height: 40,
                       ),
                     ),
                     Expanded(
-                      child: ListView(
-                        children: const [
-                          TaskCardWidget(
-                            title: "Titre 1",
-                            desc: "Description 1",
-                          ),
-                          TaskCardWidget(),
-                          TaskCardWidget(),
-                          TaskCardWidget(),
-                          TaskCardWidget(),
-                          TaskCardWidget(
-                            title: "Titre 1",
-                            desc: "Description 1",
-                          ),
-                        ],
+                      child: ScrollConfiguration(
+                        behavior: NoGlowBehaviour(),
+                        child: ListView(
+                          children: const [
+                            TaskCardWidget(
+                              title: "Titre 1",
+                              desc: "Description 1",
+                            ),
+                            TaskCardWidget(),
+                            TaskCardWidget(),
+                            TaskCardWidget(),
+                            TaskCardWidget(),
+                            TaskCardWidget(
+                              title: "Titre 1",
+                              desc: "Description 1",
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -71,13 +74,18 @@ class _HomeState extends State<Home> {
                       width: 60.0,
                       height: 60.0,
                       decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF1248BF), Color(0xFF1D57CE)],
+                            begin: Alignment(0.0, -1.0),
+                            end: Alignment(0.0, 1.0)
+                          ),
                           borderRadius: BorderRadius.circular(20.0),
                           color: Color(0xFF211551)
                       ),
                       child: Image.asset(
                         'assets/images/add_icon.png',
-                        width: 70,
-                        height: 70,
+                        width: 40,
+                        height: 40,
                       ),
                     ),
                   ),

@@ -88,9 +88,9 @@ class TodoWidget extends StatelessWidget {
           Text(
             text ?? "Pas de titre",
             style: TextStyle(
-              color: Color(0xFF211551),
+              color: isDone ? Color(0xFF211551) : Color(0xFF86829D),
               fontSize: 16.0,
-              fontWeight: FontWeight.bold,
+              fontWeight: isDone ? FontWeight.bold : FontWeight.w500,
             ),
           ),
         ],
@@ -99,3 +99,10 @@ class TodoWidget extends StatelessWidget {
   }
 }
 
+class NoGlowBehaviour extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
