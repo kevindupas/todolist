@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/screens/task.dart';
+import 'package:todolist/database_helper.dart';
+import 'package:todolist/screens/taskpage.dart';
 import 'package:todolist/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -10,6 +11,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  DatabaseHelper _dbHelper = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,26 +41,41 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     Expanded(
-                      child: ScrollConfiguration(
-                        behavior: NoGlowBehaviour(),
-                        child: ListView(
-                          children: const [
-                            TaskCardWidget(
-                              title: "Titre 1",
-                              desc: "Description 1",
+                      child: FutureBuilder(
+                        initialData: [],
+                        future: _dbHelper.getTasks(),
+                        builder: (context, snapshot) {
+                          return ScrollConfiguration(
+                            behavior: NoGlowBehaviour(),
+                            child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Taskpage(
+                                          task: snapshot.data[index],
+                                        ),
+                                      ),
+                                    ).then(
+                                          (value) {
+                                        setState(() {});
+                                      },
+                                    );
+                                  },
+                                  child: TaskCardWidget(
+                                    title: snapshot.data[index].title,
+                                    desc: snapshot.data[index].description,
+                                  ),
+                                );
+                              },
                             ),
-                            TaskCardWidget(),
-                            TaskCardWidget(),
-                            TaskCardWidget(),
-                            TaskCardWidget(),
-                            TaskCardWidget(
-                              title: "Titre 1",
-                              desc: "Description 1",
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    ),
+                    )
                   ],
                 ),
                 Positioned(
@@ -64,11 +83,15 @@ class _HomeState extends State<Home> {
                   right: 0.0,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(
-                              builder: (context) => Task()
-                          ),
-                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Taskpage(
+                              task: null,
+                            )),
+                      ).then((value) {
+                        setState(() {});
+                      });
                     },
                     child: Container(
                       width: 60.0,
