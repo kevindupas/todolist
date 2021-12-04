@@ -33,7 +33,7 @@ class _TaskPageState extends State<TaskPage> {
       _contentVisile = true;
 
       _taskTitle = widget.task!.title!;
-      _taskDescription = widget.task!.description!;
+      _taskDescription = (widget.task!.description != null) ? widget.task!.description! : "";
       _taskId = widget.task!.id!;
     }
 
